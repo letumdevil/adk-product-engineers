@@ -121,18 +121,51 @@ adk run .
 
 ### Installation
 
+**Step 1: Clone the repository**
 ```bash
-# Clone the repository
 git clone https://github.com/addyosmani/adk-product-engineering.git
 cd adk-product-engineering
+```
 
-# Install ADK
+**Step 2: Create & activate virtual environment**
+
+We recommend creating a virtual Python environment using [venv](https://docs.python.org/3/library/venv.html):
+
+```bash
+python -m venv .venv
+```
+
+Now, activate the virtual environment using the appropriate command for your operating system:
+
+```bash
+# Mac / Linux
+source .venv/bin/activate
+
+# Windows CMD:
+.venv\Scripts\activate.bat
+
+# Windows PowerShell:
+.venv\Scripts\Activate.ps1
+```
+
+**Step 3: Install ADK**
+
+```bash
 pip install google-adk
+```
 
-# Choose an agent and set up
+(Optional) Verify your installation:
+```bash
+pip show google-adk
+```
+
+**Step 4: Choose an agent and set up**
+
+```bash
+# Navigate to an agent directory
 cd python/agents/prd_studio  # or any other agent
 
-# Install dependencies
+# Install agent-specific dependencies
 pip install -r requirements.txt
 
 # Configure API key
