@@ -5,7 +5,7 @@ into structured, execution-ready documents.
 """
 
 from google.adk.agents import SequentialAgent, Agent
-from google.adk.artifacts import write_artifact
+from pathlib import Path
 import json
 
 
@@ -20,8 +20,11 @@ def save_prd(content: str, filename: str = "prd.md") -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding="utf-8")
+    artifact_path = str(artifact_path)
     return {"status": "success", "artifact": artifact_path, "message": f"PRD saved to {artifact_path}"}
 
 
@@ -35,8 +38,11 @@ def save_backlog(content: str, filename: str = "backlog.csv") -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding="utf-8")
+    artifact_path = str(artifact_path)
     return {"status": "success", "artifact": artifact_path, "message": f"Backlog saved to {artifact_path}"}
 
 
@@ -50,8 +56,11 @@ def save_risks(content: str, filename: str = "risks.md") -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding="utf-8")
+    artifact_path = str(artifact_path)
     return {"status": "success", "artifact": artifact_path, "message": f"Risk register saved to {artifact_path}"}
 
 
@@ -65,8 +74,11 @@ def save_metrics(content: str, filename: str = "metrics.md") -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding="utf-8")
+    artifact_path = str(artifact_path)
     return {"status": "success", "artifact": artifact_path, "message": f"Metrics saved to {artifact_path}"}
 
 
@@ -286,37 +298,7 @@ Be specific about instrumentation - engineers should be able to implement direct
 
 # Root agent - Sequential pipeline
 root_agent = SequentialAgent(
-    model='gemini-2.0-flash',
     name='prd_studio',
     description='Transform product ideas into execution-ready PRDs with backlog, risks, and metrics',
-    instruction="""You are PRD Studio, an AI system that helps PMs and product engineers turn fuzzy ideas into structured, execution-ready documentation.
-
-You work through a sequential process:
-1. **Intake & Scope**: Clarify the idea and set boundaries
-2. **PRD Writing**: Create comprehensive requirements document  
-3. **Backlog Creation**: Break down into implementable stories
-4. **Risk Analysis**: Identify and mitigate risks
-5. **Metrics Definition**: Define success measurement
-6. **Review & Refinement**: Check quality and completeness
-
-When a user provides a product idea:
-- Start with the intake agent to clarify and scope
-- Pass the intake output to the PRD writer
-- Generate backlog from the PRD
-- Analyze risks based on the PRD and backlog
-- Define metrics aligned with PRD goals
-- Review everything for quality
-- If major issues found, loop back once to refine (max 1 iteration)
-
-Always save outputs as artifacts so users can download and use them.
-
-Example prompts you handle:
-- "Here's a 2-sentence product idea. Turn it into a PRD with goals/non-goals, personas, MVP scope, and success metrics."
-- "Convert this PRD into user stories with acceptance criteria and edge cases."
-- "Create a launch readiness checklist and a risk register."
-- "What are the top 10 questions you need answered before engineering starts?"
-
-Be thorough, structured, and practical. The output should be ready for engineering teams to act on.
-""",
-    agents=[intake_agent, prd_writer_agent, backlog_agent, risk_agent, metrics_agent, review_agent],
+    sub_agents=[intake_agent, prd_writer_agent, backlog_agent, risk_agent, metrics_agent, review_agent],
 )

@@ -1,12 +1,12 @@
 """Experiment Copilot - A/B test design, power analysis, and result interpretation.
 
-This agent showcases ADK's tool limitation pattern: when you need code execution
-plus other capabilities, wrap specialized agents with AgentTool.
+This agent helps design experiments and analyze results with statistical rigor.
+Note: Code execution is simulated - the agent provides analysis and recommendations.
 """
 
 from google.adk.agents import Agent
-from google.adk.tools import AgentTool, CodeExecution
-from google.adk.artifacts import write_artifact
+from google.adk.tools import AgentTool
+from pathlib import Path
 import csv
 import json
 from pathlib import Path
@@ -23,8 +23,11 @@ def save_artifact(content: str, filename: str) -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding="utf-8")
+    artifact_path = str(artifact_path)
     return {"status": "success", "artifact": artifact_path, "message": f"Saved to {artifact_path}"}
 
 
@@ -145,23 +148,23 @@ def check_sample_ratio_mismatch(control_size: int, treatment_size: int,
     }
 
 
-# Stats Code Agent - Uses code execution to compute statistics
-stats_code_agent = Agent(
+# Stats Analysis Agent - Analyzes experiment results statistically
+stats_analysis_agent = Agent(
     model='gemini-2.0-flash',
-    name='stats_code_agent',
-    description='Computes p-values, confidence intervals, uplift, and statistical checks using Python',
-    instruction="""You are a statistical analysis expert. Use Python code execution to:
+    name='stats_analysis_agent',
+    description='Computes p-values, confidence intervals, uplift, and statistical checks',
+    instruction="""You are a statistical analysis expert. Analyze experiment data to compute:
 
 1. Calculate key statistics:
    - Conversion rates for control and treatment
    - Absolute and relative uplift
-   - P-values (using two-proportion z-test)
+   - P-values (using two-proportion z-test formulas)
    - Confidence intervals (95%)
    - Standard errors
 
 2. Run sanity checks:
    - Sample ratio mismatch
-   - Variance differences
+   - Variance differences  
    - Outlier detection
 
 3. Compute guardrail metrics:
@@ -174,33 +177,15 @@ Expected input format (from CSV):
 - conversions: number of conversions
 - (optional) other metrics as columns
 
-Output a JSON with all computed statistics. Be precise with calculations.
+Provide detailed statistical analysis with all computed values. Use proper statistical formulas.
+For p-value calculation with two proportions:
+- pooled_p = (successes1 + successes2) / (n1 + n2)
+- SE = sqrt(pooled_p * (1 - pooled_p) * (1/n1 + 1/n2))
+- z = (p1 - p2) / SE
+- p-value from z-score using standard normal distribution
 
-Example code structure:
-```python
-import json
-from scipy import stats
-
-# Parse data
-control_data = [row for row in data if row['variant'] == 'control']
-treatment_data = [row for row in data if row['variant'] == 'treatment']
-
-# Calculate rates
-control_conversions = sum(int(r['conversions']) for r in control_data)
-control_users = sum(int(r['users']) for r in control_data)
-# ... continue with statistical tests
-
-result = {
-    "control_rate": control_rate,
-    "treatment_rate": treatment_rate,
-    # ... more statistics
-}
-print(json.dumps(result))
-```
-
-Always use proper statistical methods. Don't cut corners.
+Always use proper statistical methods.
 """,
-    tools=[CodeExecution()],
 )
 
 # Narrative Decision Agent - Converts stats into product decisions
@@ -263,7 +248,7 @@ Use the `calculate_sample_size` tool for power calculations.
 ## 2. Results Analysis
 When a user provides experiment results (CSV), you:
 - Load the data using `load_csv_data` tool
-- Call the `stats_code_agent` (via AgentTool) to compute all statistics
+- Call the `stats_analysis_agent` (via AgentTool) to compute all statistics
 - Call the `narrative_decision_agent` (via AgentTool) to interpret results
 - Generate a comprehensive analysis document with recommendation
 
@@ -294,7 +279,7 @@ Save all outputs (plans, analyses, recommendations) as artifacts.
         load_csv_data,
         calculate_sample_size,
         check_sample_ratio_mismatch,
-        AgentTool(stats_code_agent),
+        AgentTool(stats_analysis_agent),
         AgentTool(narrative_decision_agent),
     ],
 )

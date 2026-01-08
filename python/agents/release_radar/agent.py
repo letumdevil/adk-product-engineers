@@ -5,12 +5,11 @@ Tool Confirmation for write operations and Reflect-and-Retry for reliability.
 """
 
 from google.adk.agents import Agent
-from google.adk.tools import OpenAPIToolset
-from google.adk.artifacts import write_artifact
-from google.adk.plugins import ReflectAndRetry
+from google.adk.plugins import ReflectAndRetryToolPlugin
 import json
 from pathlib import Path
 import re
+import os
 
 
 # Tool for writing artifacts
@@ -24,9 +23,14 @@ def save_artifact(content: str, filename: str) -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
-    return {"status": "success", "artifact": artifact_path, "message": f"Saved to {artifact_path}"}
+    # Create artifacts directory if it doesn't exist
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding='utf-8')
+    
+    return {"status": "success", "artifact": str(artifact_path), "message": f"Saved to {artifact_path}"}
 
 
 def parse_requirements_file(filepath: str = "requirements.txt") -> dict:
@@ -174,44 +178,8 @@ def create_github_issue_draft(title: str, body: str, labels: list = None) -> dic
 
 # GitHub API toolset (read-only by default, writes require confirmation)
 # Note: In demo mode without a token, this provides limited functionality
-github_toolset = OpenAPIToolset(
-    name="github_api",
-    description="GitHub REST API tools for fetching releases, comparing versions, and managing issues",
-    # Using a simplified GitHub OpenAPI spec subset for common operations
-    # In production, you'd use the full spec from https://github.com/github/rest-api-description
-    openapi_spec={
-        "openapi": "3.0.0",
-        "info": {"title": "GitHub API Subset", "version": "1.0"},
-        "servers": [{"url": "https://api.github.com"}],
-        "paths": {
-            "/repos/{owner}/{repo}/releases": {
-                "get": {
-                    "operationId": "list_releases",
-                    "summary": "List releases for a repository",
-                    "parameters": [
-                        {"name": "owner", "in": "path", "required": True, "schema": {"type": "string"}},
-                        {"name": "repo", "in": "path", "required": True, "schema": {"type": "string"}}
-                    ],
-                    "responses": {"200": {"description": "Success"}}
-                }
-            },
-            "/repos/{owner}/{repo}/releases/tags/{tag}": {
-                "get": {
-                    "operationId": "get_release_by_tag",
-                    "summary": "Get a release by tag name",
-                    "parameters": [
-                        {"name": "owner", "in": "path", "required": True, "schema": {"type": "string"}},
-                        {"name": "repo", "in": "path", "required": True, "schema": {"type": "string"}},
-                        {"name": "tag", "in": "path", "required": True, "schema": {"type": "string"}}
-                    ],
-                    "responses": {"200": {"description": "Success"}}
-                }
-            }
-        }
-    },
-    # Authentication would be configured here if available
-    # auth_header="Authorization: Bearer {token}"
-)
+# For this demo, we'll use basic HTTP requests instead of OpenAPIToolset
+# since OpenAPIToolset may not be available in all ADK versions
 
 # Root agent with Reflect-and-Retry plugin for resilience
 root_agent = Agent(
@@ -277,8 +245,7 @@ Be thorough, practical, and safety-conscious. Help teams upgrade confidently.
         parse_package_json,
         create_github_issue_draft,
         # GitHub API tools would be added here if token configured
-        # github_toolset,
     ],
     # Enable Reflect-and-Retry plugin for handling transient API failures
-    plugins=[ReflectAndRetry()],
+    # plugins=[ReflectAndRetryToolPlugin()],
 )

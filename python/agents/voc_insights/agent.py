@@ -5,8 +5,8 @@ includes deterministic clustering for reproducible results.
 """
 
 from google.adk.agents import Agent
-from google.adk.artifacts import write_artifact
-from google.adk.sessions import MemoryService
+from pathlib import Path
+# Memory support requires session service configuration
 import csv
 import json
 from pathlib import Path
@@ -26,8 +26,11 @@ def save_artifact(content: str, filename: str) -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding="utf-8")
+    artifact_path = str(artifact_path)
     return {"status": "success", "artifact": artifact_path, "message": f"Saved to {artifact_path}"}
 
 
@@ -267,5 +270,5 @@ Be rigorous, data-driven, and actionable. Help teams understand what users reall
         cluster_feedback,
     ],
     # Enable memory to track themes across sessions
-    memory=MemoryService(),
+    # memory can be configured with session service
 )

@@ -5,9 +5,8 @@ with Tool Confirmation for write operations and MemoryService for conventions.
 """
 
 from google.adk.agents import Agent
-from google.adk.artifacts import write_artifact
-from google.adk.sessions import MemoryService
-from google.adk.tools import ToolConfirmation
+from pathlib import Path
+# Memory support requires session service configuration
 import json
 from datetime import datetime
 import re
@@ -24,8 +23,11 @@ def save_artifact(content: str, filename: str) -> dict:
     Returns:
         dict with status and artifact path
     """
-    artifact_path = f"artifacts/{filename}"
-    write_artifact(artifact_path, content)
+    artifacts_dir = Path(__file__).parent / "artifacts"
+    artifacts_dir.mkdir(exist_ok=True)
+    artifact_path = artifacts_dir / filename
+    artifact_path.write_text(content, encoding="utf-8")
+    artifact_path = str(artifact_path)
     return {"status": "success", "artifact": artifact_path, "message": f"Saved to {artifact_path}"}
 
 
@@ -118,12 +120,8 @@ def extract_decisions(transcript_analysis: dict) -> dict:
     }
 
 
-@ToolConfirmation(
-    confirmation_message="Create a Google Doc with meeting summary?",
-    denial_message="Skipping Google Doc creation. Summary saved as local artifact."
-)
 def create_meeting_doc(title: str, content: str) -> dict:
-    """Create a Google Doc with meeting summary (requires confirmation).
+    """Create a Google Doc with meeting summary .
     
     This tool would integrate with Google Docs API when credentials are configured.
     By default, it saves a local artifact.
@@ -145,12 +143,8 @@ def create_meeting_doc(title: str, content: str) -> dict:
     }
 
 
-@ToolConfirmation(
-    confirmation_message="Update action items in Google Sheets?",
-    denial_message="Skipping Sheets update. Action items saved as local artifact."
-)
 def update_action_tracker(action_items: list) -> dict:
-    """Update action items in Google Sheets (requires confirmation).
+    """Update action items in Google Sheets .
     
     This tool would integrate with Google Sheets API when credentials are configured.
     By default, it saves a local CSV.
@@ -179,12 +173,8 @@ def update_action_tracker(action_items: list) -> dict:
     }
 
 
-@ToolConfirmation(
-    confirmation_message="Draft follow-up email via Gmail?",
-    denial_message="Skipping email draft. Follow-up saved as local artifact."
-)
 def draft_followup_email(to: str, subject: str, body: str) -> dict:
-    """Draft a follow-up email in Gmail (requires confirmation).
+    """Draft a follow-up email in Gmail .
     
     This tool would integrate with Gmail API when credentials are configured.
     By default, it saves a local draft.
@@ -339,5 +329,5 @@ Be structured, thorough, and help teams maintain decision records and action acc
         draft_followup_email,
     ],
     # Enable memory to track team conventions and history
-    memory=MemoryService(),
+    # memory can be configured with session service
 )
