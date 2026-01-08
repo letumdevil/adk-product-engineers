@@ -1,0 +1,21 @@
+timestamp,channel,user_segment,text,severity
+2024-01-15T10:30:00Z,email,enterprise,"The app is very slow when loading large datasets. Takes 30+ seconds.",high
+2024-01-15T11:45:00Z,chat,free,"Love the new search feature! Much easier to find what I need.",low
+2024-01-15T14:20:00Z,review,paid,"Mobile app crashes when I try to export reports.",high
+2024-01-16T09:00:00Z,email,paid,"Would love to see dark mode support. My eyes hurt after long sessions.",medium
+2024-01-16T10:15:00Z,chat,enterprise,"Integration with Salesforce is broken. API returns 500 errors.",high
+2024-01-16T11:30:00Z,review,free,"Great product but the pricing is too expensive for small teams.",medium
+2024-01-17T08:45:00Z,email,free,"The UI is confusing. Took me 20 minutes to figure out how to create a new project.",medium
+2024-01-17T13:00:00Z,chat,paid,"Performance has improved a lot since last update. Thanks!",low
+2024-01-17T15:30:00Z,review,enterprise,"Need better documentation for the API. Current docs are outdated.",medium
+2024-01-18T09:30:00Z,email,paid,"Search doesn't work well with special characters. Returns no results.",medium
+2024-01-18T11:00:00Z,chat,free,"The app is very slow when loading large datasets. Takes forever.",high
+2024-01-18T14:45:00Z,review,enterprise,"Would be great to have bulk import from CSV. Currently have to enter data manually.",medium
+2024-01-19T10:00:00Z,email,paid,"Security concern: passwords are visible in plain text in the settings page.",high
+2024-01-19T12:30:00Z,chat,free,"Mobile app is not responsive on iPad. Layout is broken.",medium
+2024-01-19T16:00:00Z,review,paid,"The navigation is confusing. Can't find the settings page.",medium
+2024-01-20T08:00:00Z,email,enterprise,"API rate limits are too strict. We hit the limit within an hour.",high
+2024-01-20T10:30:00Z,chat,paid,"Love the new UI! Much cleaner and easier to use.",low
+2024-01-20T13:45:00Z,review,free,"App crashes frequently on Android 13.",high
+2024-01-20T15:00:00Z,email,paid,"Need filter options in the dashboard. Too much data to scroll through.",medium
+2024-01-21T09:15:00Z,chat,enterprise,"Billing is confusing. Not clear what features are included in each plan.",medium
