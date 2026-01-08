@@ -1,0 +1,5 @@
+{"input": "Analyze this experiment: Control (10000 users, 1200 conversions) vs Treatment (10000 users, 1440 conversions). The p-value is 0.001 and all guardrail metrics are stable.", "expected_decision": "ship", "scenario": "clear_win"}
+{"input": "Analyze this experiment: Control (10000 users, 1200 conversions) vs Treatment (10000 users, 960 conversions). The p-value is 0.001.", "expected_decision": "stop", "scenario": "clear_loss"}
+{"input": "Analyze this experiment: Control (10000 users, 1200 conversions) vs Treatment (10000 users, 1230 conversions). The p-value is 0.35.", "expected_decision": "iterate", "scenario": "inconclusive"}
+{"input": "Analyze this experiment: Control (8000 users, 960 conversions) vs Treatment (12000 users, 1440 conversions). Expected ratio was 50/50.", "expected_issue": "sample_ratio_mismatch", "scenario": "srm_detected"}
+{"input": "Analyze this experiment: Control (10000 users, 1200 conversions, 200ms avg latency) vs Treatment (10000 users, 1320 conversions, 450ms avg latency). The p-value for conversions is 0.01.", "expected_concern": "guardrail_regression", "scenario": "guardrail_issue"}

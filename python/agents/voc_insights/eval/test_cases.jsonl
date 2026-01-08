@@ -1,0 +1,3 @@
+{"input": "Analyze data/sample_feedback.csv and identify the top themes.", "expected_themes": ["Performance", "Bugs", "UI/UX", "Mobile"], "check": "theme_consistency"}
+{"input": "Load and analyze the feedback. What are the main issues customers are reporting?", "check": "uses_real_quotes"}
+{"input": "Create backlog items for the top 3 themes with acceptance criteria.", "check": "recommendations_match_themes"}

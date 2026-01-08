@@ -1,0 +1,45 @@
+Sarah (PM): Good morning everyone. Thanks for joining today's product review. We have a lot to cover. Let's start with the Q1 roadmap discussion.
+
+John (Engineering): Before we get into roadmap, I wanted to flag that we're seeing performance issues with the new search feature. Page load times increased by 40% since last release.
+
+Sarah (PM): That's concerning. What's the root cause?
+
+John (Engineering): The indexing is too aggressive. We're rebuilding the entire index on every update instead of incremental updates. I estimate it'll take 2 weeks to fix properly.
+
+Sarah (PM): Okay, let's make that a P0. John, can you own the fix and target completion by end of month?
+
+John (Engineering): Yes, I'll have a detailed plan by end of week.
+
+Lisa (Design): On the roadmap front, I've finished the mockups for the mobile onboarding flow. Can we prioritize that for Q1?
+
+Sarah (PM): Let's discuss. What's the business case?
+
+Lisa (Design): Current mobile onboarding completion rate is 45%. Industry average is 70%. If we improve the flow, we could add 10k monthly active users.
+
+Mike (Data): I can confirm those numbers. Mobile is our biggest growth opportunity right now.
+
+Sarah (PM): Sounds good. Let's make mobile onboarding a Q1 priority. Lisa, can you work with John to estimate engineering effort?
+
+Lisa (Design): Absolutely. I'll set up a follow-up meeting this week.
+
+Sarah (PM): Great. One more thing - we need to make a decision on the pricing experiment. Mike, what do the results show?
+
+Mike (Data): The $20/month tier is performing well. 12% conversion rate vs 8% for the $15 tier. Revenue per user is up 30%. I recommend we ship it.
+
+Sarah (PM): Any concerns about churn?
+
+Mike (Data): Churn rate is actually slightly better. Users at the higher price point seem more engaged.
+
+Sarah (PM): Okay, decision made - we'll roll out the $20 tier to 100% of users next week. Mike, can you create the rollout plan?
+
+Mike (Data): Will do. I'll have it ready by Thursday.
+
+Sarah (PM): Perfect. Let's wrap up. To summarize: John is fixing search performance (P0, due end of month), Lisa and John are scoping mobile onboarding for Q1, and Mike is creating the pricing rollout plan. Any questions?
+
+John (Engineering): One question - for mobile onboarding, are we doing iOS first or both platforms simultaneously?
+
+Sarah (PM): Good question. Let's discuss in the follow-up meeting. Add that to the agenda.
+
+Lisa (Design): Will do.
+
+Sarah (PM): Great. Thanks everyone. I'll send out meeting notes and action items later today.
