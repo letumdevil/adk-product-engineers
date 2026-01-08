@@ -1,4 +1,4 @@
-# ADK Product Engineering - Agent Samples
+# ADK for Product Engineers - Agent Examples
 
 **5 production-ready ADK agent projects for Product Managers and Product Engineers**
 
