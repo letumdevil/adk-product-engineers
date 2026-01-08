@@ -2,7 +2,7 @@
 
 **5 production-ready ADK agent projects for Product Managers and Product Engineers**
 
-This repository contains five complete Agent Development Kit (ADK) projects that demonstrate real-world use cases for AI agents in product development. Each agent is fully functional, well-documented, and can be run immediately with just an API key.
+This repository contains five complete [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/) projects that demonstrate real-world use cases for AI agents in product development. Each agent is fully functional, well-documented, and can be run immediately with just an API key. It's part of [Product Engineering with AI](https://prodengineer.org/).
 
 ## 🤖 The Five Agents
 
@@ -391,4 +391,4 @@ Built with Google's Agent Development Kit (ADK). Inspired by real product develo
 
 ---
 
-**Ready to get started?** Pick an agent, follow the README, and start building! ��
+**Ready to get started?** Pick an agent, follow the README, and start building! 
